@@ -4,7 +4,7 @@ import datetime
 import dateutil.relativedelta as delt
 import flask
 
-import wikiviews.wikipedia as api
+import wikiviews.wiki_aggregator as aggregator
 
 _PROJECT = "en.wikipedia"
 
@@ -61,6 +61,55 @@ def get_most_viewed_in_month_ending(date: str):
         },
     )
 
+@app.route('/articles/<article>/views/month-ending/<date>')
+def get_article_views_in_month_ending(article: str, date: str):
+    try:
+        date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    except ValueError:
+        flask.abort(400, description="Invalid date string")
+    start = date - delt.relativedelta(months=+1)
+    num_views = get_article_view_num_between_dates(
+        article=article,
+        start=start,
+        end=date,
+    )
+
+    return success(
+        {
+            "article_views": {
+                "article": article,
+                "start": start,
+                "end": date,
+                "views": num_views,
+            },
+        },
+    )
+
+
+@app.route('/articles/<article>/views/week-ending/<date>')
+def get_article_views_in_week_ending(article: str, date: str):
+    try:
+        date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    except ValueError:
+        flask.abort(400, description="Invalid date string")
+    start = date - delt.relativedelta(weeks=+1)
+    num_views = get_article_view_num_between_dates(
+        article=article,
+        start=start,
+        end=date,
+    )
+
+    return success(
+        {
+            "article_views": {
+                "article": article,
+                "start": start,
+                "end": date,
+                "views": num_views,
+            },
+        },
+    )
+
 
 def success(data) -> flask.Response:
     data = flask.jsonify(data)
@@ -72,8 +121,12 @@ def success(data) -> flask.Response:
 def get_most_viewed_between_dates(start: datetime.date, end: datetime.date):
     # Build a map of article to page count
     results = collections.defaultdict(int)
-    for i in range((end-start).days):
-        most_viewed = api.get_most_viewed_on_date(_PROJECT, start + datetime.timedelta(days=i))
+    most_viewed_by_day = aggregator.iter_page_views_between(
+        _PROJECT,
+        start,
+        end,
+    )
+    for day, most_viewed in most_viewed_by_day:
         for article in most_viewed:
             results[article.article] += article.page_views
 
@@ -90,3 +143,27 @@ def get_most_viewed_between_dates(start: datetime.date, end: datetime.date):
         key=lambda item: item["views"],
         reverse=True,
     )
+
+
+def get_article_view_num_between_dates(
+    article: str,
+    start: datetime.date,
+    end: datetime.date,
+) -> int:
+
+    most_viewed_by_day = aggregator.iter_page_views_between(
+        _PROJECT,
+        start,
+        end,
+    )
+    num_views = 0
+    for _, most_viewed in most_viewed_by_day:
+        num_views += next(
+            (
+                adv.page_views for adv in most_viewed
+                if adv.article == article
+            ),
+            0,
+        )
+
+    return num_views
