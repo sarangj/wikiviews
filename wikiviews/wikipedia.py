@@ -11,7 +11,7 @@ BASE_URL = "https://wikimedia.org/api/rest_v1/metrics/pageviews"
 # See https://meta.wikimedia.org/wiki/User-Agent_policy
 # Might wanna make this an env var
 USER_AGENT = (
-    "Sarang Joshi (sarangjoshi22@gmail.com; "
+    "Sarang Joshi (sarangjoshi22@gmail.com); "
     "https://github.com/sarangj/"
 )
 
