@@ -13,7 +13,7 @@ All instances of the `date` parameter require an ISO style date stamp (e.g., '20
 
 ### Most views per week
 
-  - '/most-viewed/week-ending/<date>'
+  - '/most-viewed/week-ending/{date}'
 
 Returns a sorted list of articles by page view in the last week (as determined by the given date).
 
@@ -21,12 +21,12 @@ Returns a sorted list of articles by page view in the last week (as determined b
   ```json
   {
     "most_viewed": {
-      "start_date": <date>,
-      "end_date": <date>,
+      "start_date": {date},
+      "end_date": {date},
       "articles": [
         {
-          "article": <str>,
-          "views": <int>
+          "article": {str},
+          "views": {int}
         }
       ]
     }
@@ -36,7 +36,7 @@ Returns a sorted list of articles by page view in the last week (as determined b
 
 ### Most views per month
 
-  - '/most-viewed/month-ending/<date>'
+  - '/most-viewed/month-ending/{date}'
 
 Returns a sorted list of articles by page view in the last month (as determined by the given date).
 
@@ -44,12 +44,12 @@ Returns a sorted list of articles by page view in the last month (as determined 
   ```json
   {
     "most_viewed": {
-      "start_date": <date>,
-      "end_date": <date>,
+      "start_date": {date},
+      "end_date": {date},
       "articles": [
         {
-          "article": <str>,
-          "views": <int>
+          "article": {str},
+          "views": {int}
         }
       ]
     }
@@ -59,7 +59,7 @@ Returns a sorted list of articles by page view in the last month (as determined 
 
 ### Article views per week
 
-  - '/articles/<article>/views/week-ending/<date>'
+  - '/articles/{article}/views/week-ending/{date}'
 
 Returns the number of views for the given article in the last week (as determined by the given date).
 
@@ -67,10 +67,10 @@ Returns the number of views for the given article in the last week (as determine
   ```json
   {
     "article_views": {
-      "start_date": <date>,
-      "end_date": <date>,
-      "article": <str>,
-      "views": <int>
+      "start_date": {date},
+      "end_date": {date},
+      "article": {str},
+      "views": {int}
     }
   }
 
@@ -78,7 +78,7 @@ Returns the number of views for the given article in the last week (as determine
 
 ### Article views per month
 
-  - '/articles/<article>/views/month-ending/<date>'
+  - '/articles/{article}/views/month-ending/{date}'
 
 Returns the number of views for the given article in the last month (as determined by the given date).
 
@@ -86,10 +86,10 @@ Returns the number of views for the given article in the last month (as determin
   ```json
   {
     "article_views": {
-      "start_date": <date>,
-      "end_date": <date>,
-      "article": <str>,
-      "views": <int>
+      "start_date": {date},
+      "end_date": {date},
+      "article": {str},
+      "views": {int}
     }
   }
 
