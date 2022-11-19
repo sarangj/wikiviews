@@ -31,8 +31,8 @@ def article_views(
     payload = {
         "article_views": {
             "article": article,
-            "start": util.iso_date(start),
-            "end": util.iso_date(end),
+            "start_date": util.iso_date(start),
+            "end_date": util.iso_date(end),
             "views": views,
         },
     }
